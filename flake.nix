@@ -23,6 +23,14 @@
       in {
         inherit config;
         default = pkgs.writeShellScriptBin "nvim-moss" ''
+          if [ "$1" = "--install" ]; then
+            echo "Installing moss config to ~/.config/nvim..."
+            mkdir -p ~/.config/nvim
+            cp ${config}/* ~/.config/nvim/
+            cp -r ${config}/lua ${config}/colors ~/.config/nvim/
+            echo "Done. Run nvim as normal."
+            exit 0
+          fi
           DIR=$(mktemp -d); trap 'rm -rf $DIR' EXIT
           mkdir -p $DIR/nvim
           cp ${config}/* $DIR/nvim/
