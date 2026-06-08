@@ -3,7 +3,14 @@ vim.g.mapleader = " "  -- space is leader
 vim.o.timeoutlen = 300    -- faster leader key detection
 vim.wo.relativenumber = true   -- relative line numbers
 vim.wo.number = true           -- show current line as absolute
-vim.wo.wrap = false            -- no line wrapping
+vim.wo.wrap = false            -- no line wrapping by default
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.wo.wrap = true         -- wrap only in markdown
+    vim.wo.linebreak = true    -- wrap at word boundaries
+  end,
+})
 -- Add Homebrew to PATH (needed for tree-sitter CLI, must be before lazy loads plugins)
 vim.fn.setenv("PATH", "/opt/homebrew/bin:" .. (vim.fn.getenv("PATH") or ""))
 

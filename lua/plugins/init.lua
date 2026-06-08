@@ -22,10 +22,51 @@ return {
 
   ---------------------------------------------------------------------------
   -- RAINBOW BRACKETS: alternating ({[]}) colors
-  ---------------------------------------------------------------------------
+  --------------------------------------------------------------------------
   {
     "HiPhish/rainbow-delimiters.nvim",
     event = "VeryLazy",
+  },
+
+  ---------------------------------------------------------------------------
+  -- START SCREEN: alpha-nvim — moss minimal
+  ---------------------------------------------------------------------------
+  {
+    "goolord/alpha-nvim",
+    event = "VimEnter",
+    config = function()
+      local alpha = require("alpha")
+      local dashboard = require("alpha.themes.dashboard")
+      dashboard.section.header.val = {
+        [[                                   ]],
+        [[              moss                 ]],
+        [[              ~~~~                 ]],
+        [[       leader: ]] .. vim.g.mapleader,
+        [[                                   ]],
+      }
+      dashboard.section.header.opts.hl = "Function"
+      dashboard.section.buttons.val = {
+        dashboard.button("rr", "find file"),
+        dashboard.button("rz", "live grep"),
+        dashboard.button("fb", "buffers"),
+        dashboard.button("p",  "explorer"),
+        dashboard.button("c",  "config"),
+      }
+      dashboard.section.footer.val = {
+        "new file  :e <name>",
+      }
+      dashboard.section.buttons.opts.spacing = 1
+      alpha.setup(dashboard.opts)
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "AlphaReady",
+        callback = function()
+          vim.opt_local.cursorline = false
+          vim.opt_local.wrap = false
+          vim.opt_local.sidescroll = 0
+          vim.opt_local.sidescrolloff = 999
+        end,
+      })
+    end,
   },
 
   ---------------------------------------------------------------------------
