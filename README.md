@@ -34,5 +34,4 @@ Bootstraps `~/.config/nvim` and launches Neovim. After that, plain `nvim` works.
 
 ## Prerequisites
 
-- `tree-sitter` CLI installed (`npm install -g tree-sitter-cli`)
-- Neovim 0.12+
+- Neovim 0.12+ (bundled with the Nix package)
