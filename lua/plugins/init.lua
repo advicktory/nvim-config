@@ -263,6 +263,11 @@ return {
         layout_strategy = "horizontal",
         layout_config = { prompt_position = "top" },
         sorting_strategy = "ascending",
+        file_ignore_patterns = {},     -- show dotfiles and hidden files
+        vimgrep_arguments = {
+          "rg", "--hidden", "--color=never", "--no-heading",
+          "--with-filename", "--line-number", "--column", "--smart-case",
+        },
         mappings = {
           n = {
             ["n"]  = "move_selection_previous",  -- phys j → prev item
@@ -270,6 +275,11 @@ return {
             ["o"]  = "move_selection_previous",  -- phys l → prev item
             ["l"]  = "select_default",          -- phys ; → open selected
           },
+        },
+      },
+      pickers = {
+        find_files = {
+          hidden = true,
         },
       },
     },
