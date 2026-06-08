@@ -22,19 +22,19 @@
         };
       in {
         inherit config;
-        default = pkgs.writeShellScriptBin "nvim-moss" ''
-          mkdir -p ~/.config/nvim
-          cp ${config}/* ~/.config/nvim/
-          cp -r ${config}/lua ${config}/colors ~/.config/nvim/
-          exec ${pkgs.neovim}/bin/nvim "$@"
-        '';
-        try = pkgs.writeShellScriptBin "nvim-moss-try" ''
+        default = pkgs.writeShellScriptBin "nvim-moss-try" ''
           DIR=$(mktemp -d); trap 'rm -rf $DIR' EXIT
           mkdir -p $DIR/nvim
           cp ${config}/* $DIR/nvim/
           cp -r ${config}/lua ${config}/colors $DIR/nvim/
           export PATH="${pkgs.curl}/bin:${pkgs.gnutar}/bin:$PATH"
           XDG_CONFIG_HOME=$DIR ${pkgs.neovim}/bin/nvim "$@"
+        '';
+        install = pkgs.writeShellScriptBin "nvim-moss" ''
+          mkdir -p ~/.config/nvim
+          cp ${config}/* ~/.config/nvim/
+          cp -r ${config}/lua ${config}/colors ~/.config/nvim/
+          exec ${pkgs.neovim}/bin/nvim "$@"
         '';
       });
     };
