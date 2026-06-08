@@ -28,12 +28,10 @@
           if echo "$0" | grep -q "/nix/var/nix/profiles/"; then
             mkdir -p ~/.config/nvim
             cp -r ${config}/* ~/.config/nvim/
-            chmod -R u+w ~/.config/nvim/
           else
             DIR=$(mktemp -d); trap 'rm -rf $DIR' EXIT
             mkdir -p $DIR/nvim
             cp -r ${config}/* $DIR/nvim/
-            chmod -R u+w $DIR/nvim/
             export XDG_CONFIG_HOME=$DIR
           fi
           export PATH="${pkgs.tree-sitter}/bin:${pkgs.ripgrep}/bin:${pkgs.fd}/bin:${pkgs.git}/bin:${pkgs.curl}/bin:${pkgs.gnutar}/bin:${pkgs.stdenv.cc}/bin:$PATH"
