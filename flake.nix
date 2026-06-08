@@ -27,13 +27,11 @@
           # nix profile install → bootstraps ~/.config (runs from profile symlink)
           if echo "$0" | grep -q "/nix/var/nix/profiles/"; then
             mkdir -p ~/.config/nvim
-            cp ${config}/* ~/.config/nvim/
-            cp -r ${config}/lua ${config}/colors ~/.config/nvim/
+            cp -r ${config}/* ~/.config/nvim/
           else
             DIR=$(mktemp -d); trap 'rm -rf $DIR' EXIT
             mkdir -p $DIR/nvim
-            cp ${config}/* $DIR/nvim/
-            cp -r ${config}/lua ${config}/colors $DIR/nvim/
+            cp -r ${config}/* $DIR/nvim/
             export XDG_CONFIG_HOME=$DIR
           fi
           export PATH="${pkgs.curl}/bin:${pkgs.gnutar}/bin:$PATH"
