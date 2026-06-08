@@ -14,7 +14,7 @@ Sandboxed — runs in a temp directory, leaves no trace.
 
 ```bash
 nix profile install github:advicktory/nvim-config#install
-nvim-moss
+nvim
 ```
 
 Bootstraps `~/.config/nvim` and launches Neovim. After that, plain `nvim` works.
