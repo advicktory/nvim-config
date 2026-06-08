@@ -13,7 +13,7 @@ Sandboxed — runs in a temp directory, leaves no trace.
 ## Install it
 
 ```bash
-nix profile install github:advicktory/nvim-config#install
+nix profile install github:advicktory/nvim-config
 nvim
 ```
 

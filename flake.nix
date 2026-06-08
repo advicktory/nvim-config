@@ -1,12 +1,12 @@
 # flake.nix — Neovim config as a Nix package (cross-platform)
-# nix run .   |   nix run github:you/nvim-config   |   nix profile install .
+# nix run .          → sandboxed, temporary
+# nix profile install → permanent, bootstraps ~/.config/nvim
 {
   description = "Neovim config: moss theme + Colemak keymaps + LSP + treesitter";
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
   outputs = { self, nixpkgs }:
     let
-      # Support all common systems
       systems = [ "aarch64-darwin" "x86_64-darwin" "x86_64-linux" "aarch64-linux" ];
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f (import nixpkgs { inherit system; }));
     in {
@@ -22,18 +22,21 @@
         };
       in {
         inherit config;
-        default = pkgs.writeShellScriptBin "nvim-moss-try" ''
-          DIR=$(mktemp -d); trap 'rm -rf $DIR' EXIT
-          mkdir -p $DIR/nvim
-          cp ${config}/* $DIR/nvim/
-          cp -r ${config}/lua ${config}/colors $DIR/nvim/
+        default = pkgs.writeShellScriptBin "nvim" ''
+          # nix run → sandboxed (runs from store path)
+          # nix profile install → bootstraps ~/.config (runs from profile symlink)
+          if echo "$0" | grep -q "/nix/var/nix/profiles/"; then
+            mkdir -p ~/.config/nvim
+            cp ${config}/* ~/.config/nvim/
+            cp -r ${config}/lua ${config}/colors ~/.config/nvim/
+          else
+            DIR=$(mktemp -d); trap 'rm -rf $DIR' EXIT
+            mkdir -p $DIR/nvim
+            cp ${config}/* $DIR/nvim/
+            cp -r ${config}/lua ${config}/colors $DIR/nvim/
+            export XDG_CONFIG_HOME=$DIR
+          fi
           export PATH="${pkgs.curl}/bin:${pkgs.gnutar}/bin:$PATH"
-          XDG_CONFIG_HOME=$DIR ${pkgs.neovim}/bin/nvim "$@"
-        '';
-        install = pkgs.writeShellScriptBin "nvim" ''
-          mkdir -p ~/.config/nvim
-          cp ${config}/* ~/.config/nvim/
-          cp -r ${config}/lua ${config}/colors ~/.config/nvim/
           exec ${pkgs.neovim}/bin/nvim "$@"
         '';
       });
