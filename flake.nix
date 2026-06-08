@@ -30,7 +30,7 @@
           export PATH="${pkgs.curl}/bin:${pkgs.gnutar}/bin:$PATH"
           XDG_CONFIG_HOME=$DIR ${pkgs.neovim}/bin/nvim "$@"
         '';
-        install = pkgs.writeShellScriptBin "nvim-moss" ''
+        install = pkgs.writeShellScriptBin "nvim" ''
           mkdir -p ~/.config/nvim
           cp ${config}/* ~/.config/nvim/
           cp -r ${config}/lua ${config}/colors ~/.config/nvim/
