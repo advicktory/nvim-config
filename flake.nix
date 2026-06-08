@@ -27,7 +27,7 @@
           mkdir -p $DIR/nvim
           cp ${config}/* $DIR/nvim/
           cp -r ${config}/lua ${config}/colors $DIR/nvim/
-          export PATH="${pkgs.tree-sitter-cli}/bin:${pkgs.curl}/bin:${pkgs.gnutar}/bin:$PATH"
+          export PATH="${pkgs.curl}/bin:${pkgs.gnutar}/bin:$PATH"
           XDG_CONFIG_HOME=$DIR ${pkgs.neovim}/bin/nvim "$@"
         '';
       });
