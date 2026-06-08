@@ -34,7 +34,7 @@
             cp -r ${config}/* $DIR/nvim/
             export XDG_CONFIG_HOME=$DIR
           fi
-          export PATH="${pkgs.curl}/bin:${pkgs.gnutar}/bin:$PATH"
+          export PATH="${pkgs.tree-sitter}/bin:${pkgs.curl}/bin:${pkgs.gnutar}/bin:$PATH"
           exec ${pkgs.neovim}/bin/nvim "$@"
         '';
       });
