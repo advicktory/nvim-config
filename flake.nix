@@ -23,20 +23,14 @@
       in {
         inherit config;
         default = pkgs.writeShellScriptBin "nvim-moss" ''
-          if [ "$1" = "--install" ]; then
-            echo "Installing moss config to ~/.config/nvim..."
+          # If moss isn't installed yet, auto-install to ~/.config/nvim
+          if [ ! -f ~/.config/nvim/init.lua ] || ! grep -q "moss" ~/.config/nvim/init.lua 2>/dev/null; then
+            echo "First run: installing moss config..."
             mkdir -p ~/.config/nvim
             cp ${config}/* ~/.config/nvim/
             cp -r ${config}/lua ${config}/colors ~/.config/nvim/
-            echo "Done. Run nvim as normal."
-            exit 0
           fi
-          DIR=$(mktemp -d); trap 'rm -rf $DIR' EXIT
-          mkdir -p $DIR/nvim
-          cp ${config}/* $DIR/nvim/
-          cp -r ${config}/lua ${config}/colors $DIR/nvim/
-          export PATH="${pkgs.curl}/bin:${pkgs.gnutar}/bin:$PATH"
-          XDG_CONFIG_HOME=$DIR ${pkgs.neovim}/bin/nvim "$@"
+          exec ${pkgs.neovim}/bin/nvim "$@"
         '';
       });
     };
