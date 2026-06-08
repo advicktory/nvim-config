@@ -435,6 +435,33 @@ return {
   },
 
   ---------------------------------------------------------------------------
+  -- CSV VIEW: tabular display for CSV/TSV files
+  --   <leader>cv = toggle view
+  --   :CsvViewToggle / :CsvViewEnable / :CsvViewDisable
+  --   if/af = text objects for fields
+  ---------------------------------------------------------------------------
+  {
+    "hat0uma/csvview.nvim",
+    ft = { "csv", "tsv" },
+    cmd = { "CsvViewEnable", "CsvViewDisable", "CsvViewToggle" },
+    keys = {
+      { "<leader>cv", "<cmd>CsvViewToggle<cr>", desc = "Toggle CSV view" },
+    },
+    opts = {
+      parser = { comments = { "#", "//" } },
+      view = { display_mode = "border" },
+      keymaps = {
+        textobject_field_inner = { "if", mode = { "o", "x" } },
+        textobject_field_outer = { "af", mode = { "o", "x" } },
+        jump_next_field_end = { "k",  mode = { "n", "v" } },
+        jump_prev_field_end = { "K",  mode = { "n", "v" } },
+        jump_next_row =       { "u",  mode = { "n", "v" } },
+        jump_prev_row =       { "U",  mode = { "n", "v" } },
+      },
+    },
+  },
+
+  ---------------------------------------------------------------------------
   -- AUTO-PAIRS
   ---------------------------------------------------------------------------
   { "windwp/nvim-autopairs", event = "InsertEnter", opts = {} },
