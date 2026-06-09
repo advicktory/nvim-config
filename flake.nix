@@ -35,7 +35,7 @@
             chmod +w $DIR/nvim/lazy-lock.json
             export XDG_CONFIG_HOME=$DIR
           fi
-          export PATH="${pkgs.tree-sitter}/bin:${pkgs.ripgrep}/bin:${pkgs.fd}/bin:${pkgs.git}/bin:${pkgs.curl}/bin:${pkgs.gnutar}/bin:${pkgs.stdenv.cc}/bin:$PATH"
+          export PATH="${pkgs.nodejs}/bin:${pkgs.tree-sitter}/bin:${pkgs.ripgrep}/bin:${pkgs.fd}/bin:${pkgs.git}/bin:${pkgs.curl}/bin:${pkgs.gnutar}/bin:${pkgs.stdenv.cc}/bin:$PATH"
           exec ${pkgs.neovim}/bin/nvim "$@"
         '';
       });
