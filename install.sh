@@ -1,22 +1,19 @@
 #!/bin/bash
-# install.sh — nvim config (standalone, no brew/nix needed)
-# Copies files into ~/.config/nvim (not symlink — nvim writes lazy-lock.json at runtime)
+# install.sh — nvim config (standalone)
+# Only installs if ~/.config/nvim doesn't exist yet.
+# To force reinstall: delete ~/.config/nvim first.
 set -euo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
 TARGET="${HOME}/.config/nvim"
 
-echo "🌿  nvim config → ~/.config/nvim"
-
-# Backup existing
-if [ -e "$TARGET" ] && [ ! -L "$TARGET" ]; then
-  mv "$TARGET" "${TARGET}.bak-$(date +%Y%m%d-%H%M%S)"
-elif [ -L "$TARGET" ]; then
-  rm "$TARGET"
+if [ -d "$TARGET" ] && [ -f "$TARGET/init.lua" ]; then
+  echo "🌿  nvim config already exists — skipped (delete ~/.config/nvim to reinstall)"
+  exit 0
 fi
 
-# Copy (not symlink — nvim modifies files in-place)
+echo "🌿  nvim config → ~/.config/nvim"
+[ -e "$TARGET" ] && mv "$TARGET" "${TARGET}.bak-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$TARGET"
 cp -r "$DIR"/init.lua "$DIR"/lazy-lock.json "$DIR"/lua "$DIR"/colors "$DIR"/flake.nix "$DIR"/flake.lock "$TARGET"/
 echo "   done"
-echo ""
 echo "   Next: launch nvim — plugins will auto-install via lazy.nvim"
